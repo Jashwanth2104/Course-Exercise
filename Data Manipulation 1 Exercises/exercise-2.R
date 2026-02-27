@@ -5,12 +5,14 @@
 
 # Load library
 library(dplyr)
+library(haven)
+setwd("D:\\R\\UpdatedCDISCPilotData\\UpdatedCDISCPilotData\\ADAM")
 
 #-----------------------------------------------------------
 # 0. Read ADLB dataset
 #-----------------------------------------------------------
 
-adlb <- read.csv("ADLB.csv", stringsAsFactors = FALSE)
+adlbc <- read_xpt("adlbc.xpt")
 
 #-----------------------------------------------------------
 # 01. Filter Visits
@@ -18,8 +20,9 @@ adlb <- read.csv("ADLB.csv", stringsAsFactors = FALSE)
 # (AVISITN > 0).
 #-----------------------------------------------------------
 
-tfl_step1 <- adlb %>%
+tfl_step1 <- adlbc %>%
   # Your code here
+  filter(AVISITN > 0)
   
   
   #-----------------------------------------------------------
@@ -30,7 +33,7 @@ tfl_step1 <- adlb %>%
 
 tfl_step2 <- tfl_step1 %>%
   # Your code here
-  
+  filter( PARAMCD %in% c("ALT", "AST", "BILI"))
   
   #-----------------------------------------------------------
 # 03. Group Data
@@ -42,6 +45,8 @@ tfl_step2 <- tfl_step1 %>%
 
 tfl_step3 <- tfl_step2 %>%
   # Your code here
+  group_by(TRTP,PARAMCD,AVISITN)
+
   
   
   #-----------------------------------------------------------
@@ -58,7 +63,14 @@ tfl_step3 <- tfl_step2 %>%
 
 tfl_step4 <- tfl_step3 %>%
   # Your code here
-  
+  summarise(N=n(),
+  Mean=mean(AVAL,na.arm=TRUE),
+  Median=median(AVAL,na.arm=TRUE),
+  SD=sd(AVAL),
+  Min=min(AVAL,na.arm=TRUE),
+  Max=max(AVAL,na.arm=TRUE),
+  Mean_of_CHG=mean(CHG,na.arm=TRUE),.groups = "drop"
+  )
   
   #-----------------------------------------------------------
 # 05. Handle Missing Values
@@ -76,10 +88,11 @@ tfl_step5 <- tfl_step4 %>%
 # (using .groups = "drop").
 #-----------------------------------------------------------
 
-tfl_final <- tfl_step5 %>%
+tfl_final <- tfl_step4 %>%
   # Your code here
+
   
   
   #-----------------------------------------------------------
 # End of Exercise
-#-----------------------------------------------------------
+#--------------------------------------------------------------
