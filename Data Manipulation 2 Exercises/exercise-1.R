@@ -8,13 +8,15 @@
 
 # Load library
 library(dplyr)
-
+library(tidyr)
+library(haven)
+setwd("D:\\R\\UpdatedCDISCPilotData\\UpdatedCDISCPilotData")
 #-----------------------------------------------------------
 # 0. Read ADSL and VS datasets
 #-----------------------------------------------------------
 
-adsl <- read.csv("ADSL.csv", stringsAsFactors = FALSE)
-vs   <- read.csv("VS.csv", stringsAsFactors = FALSE)
+adsl <-read_xpt("ADAM/adsl.xpt")
+vs   <-read_xpt("SDTM/vs.xpt")
 
 #-----------------------------------------------------------
 # 1. Check Row Counts Before Join
@@ -23,7 +25,8 @@ vs   <- read.csv("VS.csv", stringsAsFactors = FALSE)
 #-----------------------------------------------------------
 
 # Your code here
-
+nrow(adsl)
+nrow(vs)
 
 #-----------------------------------------------------------
 # 2. Join ADSL Population Flags onto VS
@@ -32,7 +35,10 @@ vs   <- read.csv("VS.csv", stringsAsFactors = FALSE)
 #-----------------------------------------------------------
 
 vs_joined <- vs %>%
-  # Your code here
+   left_join(
+     adsl %>% select(USUBJID,SAFFL,TRT01A),
+     by="USUBJID"
+   )
   
   
   #-----------------------------------------------------------
@@ -41,7 +47,7 @@ vs_joined <- vs %>%
 #-----------------------------------------------------------
 
 vs_safety <- vs_joined %>%
-  # Your code here
+    filter(SAFFL == "Y")
   
   
   #-----------------------------------------------------------
@@ -53,7 +59,7 @@ vs_safety <- vs_joined %>%
 #-----------------------------------------------------------
 
 vs_bp <- vs_safety %>%
-  # Your code here
+   filter(VSTESTCD %in% c("SYSBP","DIABP"))
   
   
   #-----------------------------------------------------------
@@ -63,7 +69,9 @@ vs_bp <- vs_safety %>%
 # - Safety filter
 # - Parameter filter
 #-----------------------------------------------------------
-
+nrow(vs_bp)
+nrow(vs_joined)
+nrow(vs_safety)
 # Your code here
 
 
