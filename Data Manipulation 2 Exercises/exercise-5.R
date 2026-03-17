@@ -15,7 +15,9 @@
 #-----------------------------------------------------------
 # 0. Create Input Data
 #-----------------------------------------------------------
-
+library(dplyr)
+library(lubridate)
+library(admiral)
 trtsdt_char  <- "2024-01-15"
 aestdtc_char <- "2024-01-20"
 
@@ -25,13 +27,13 @@ aestdtc_char <- "2024-01-20"
 # from character to Date format.
 #-----------------------------------------------------------
 
-trtsdt <- 
+trtsdt <- as.Date(trtsdt_char)
   # Your code here
   
-  aestdtc <- 
+  aestdtc <-as.Date(aestdtc_char) 
   # Your code here
-  
-  
+
+  adae= pharmaverseadam::adae
   #-----------------------------------------------------------
 # 2. Derive Study Day (ASTDY)
 # Follow CDISC rules:
@@ -40,7 +42,13 @@ trtsdt <-
 # - If event date < treatment start → negative day
 #-----------------------------------------------------------
 
-astdy <- 
+ASTDY<-adae %>% 
+    mutate(ASTDY = ifelse(as.Date(AESTDTC) >= as.Date(TRTSDT),
+                          "positive",
+                          "negative"
+                          )
+    )
+                      
   # Your code here
   
   
@@ -50,7 +58,10 @@ astdy <-
 # between AESTDTC and TRTSDT.
 #-----------------------------------------------------------
 
-duration_days <- 
+duration_days <-ASTDY %>% 
+    mutate(
+  DURATION = as.integer(as.Date(AESTDTC) - as.Date(TRTSDT) + 1)
+)
   # Your code here
   
   
