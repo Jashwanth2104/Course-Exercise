@@ -43,6 +43,7 @@ df <- data.frame(
 #-----------------------------------------------------------
 
 df_step1 <- df %>%
+  mutate(STUDYID=word(USUBJID,1,sep = "-"))
   # Your code here
   
   
@@ -52,6 +53,7 @@ df_step1 <- df %>%
 #-----------------------------------------------------------
 
 df_step2 <- df_step1 %>%
+  mutate(COUNTRYCODE=word(USUBJID,2,sep = "-"))
   # Your code here
   
   
@@ -62,6 +64,7 @@ df_step2 <- df_step1 %>%
 #-----------------------------------------------------------
 
 df_step3 <- df_step2 %>%
+  mutate(SUBJID_SHORT=word(USUBJID,3,4,sep="-"))
   # Your code here
   
   
@@ -71,7 +74,8 @@ df_step3 <- df_step2 %>%
 # are from "USA" sites.
 #-----------------------------------------------------------
 
-usa_check <- 
+usa_check <- df_step3 %>% 
+  filter(COUNTRYCODE %in% "USA")
   # Your code here
   
   
@@ -80,7 +84,7 @@ usa_check <-
 #-----------------------------------------------------------
 
 # Your code here
-
+usa_check
 
 #-----------------------------------------------------------
 # End of Exercise
