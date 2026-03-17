@@ -16,22 +16,20 @@
 #-----------------------------------------------------------
 
 library(dplyr)
-library(purrr)
 
 #-----------------------------------------------------------
 # 1. Read ADVS Dataset
 #-----------------------------------------------------------
 
-advs <- read.csv("ADVS.csv", stringsAsFactors = FALSE)
+advs <- pharmaverseadam::advs
 
 #-----------------------------------------------------------
 # 2. Create Parameter List
 # Store vital signs parameters in a vector.
 #-----------------------------------------------------------
 
-params <- c(
+params <- c("SYSBP", "DIABP", "PULSE", "TEMP")
   # Your code here
-)
 
 #-----------------------------------------------------------
 # 3. Loop Over Parameters Using map()
@@ -44,12 +42,17 @@ params <- c(
 #       SD of AVAL
 #-----------------------------------------------------------
 
-summary_list <- map(
-  params,
-  function(param) {
-    
-    # Your code here
-    
+summary_list <- map(params,function(param) {
+    advs %>% 
+    filter(PARAMCD==param) %>% 
+    group_by(TRT01A,AVISIT) %>% 
+    summarise(
+      N=n(),
+      Mean = mean(AVAL,na.rm=TRUE),
+      SD = sd(AVAL,na.rm = TRUE),
+      .groups="drop"
+    ) %>% 
+    mutate(PARAMCD=param)
   }
 )
 
@@ -60,8 +63,8 @@ summary_list <- map(
 # using bind_rows().
 #-----------------------------------------------------------
 
-final_summary <- 
-  # Your code here
+final_summary <- bind_rows(summary_list)
+   
   
   
   #-----------------------------------------------------------
