@@ -13,12 +13,12 @@
 # Load libraries
 library(dplyr)
 library(tidyr)
+library(haven)
 
 #-----------------------------------------------------------
 # 0. Read ADVS dataset
 #-----------------------------------------------------------
-
-advs <- read.csv("ADVS.csv", stringsAsFactors = FALSE)
+ advs <- pharmaverseadam::advs
 
 #-----------------------------------------------------------
 # 1. Filter Parameter
@@ -28,7 +28,7 @@ advs <- read.csv("ADVS.csv", stringsAsFactors = FALSE)
 
 step1 <- advs %>%
   # Your code here
-  
+  filter(VSTESTCD %in% c("SYSBP"))
   
   #-----------------------------------------------------------
 # 2. Group Data
@@ -39,6 +39,7 @@ step1 <- advs %>%
 
 step2 <- step1 %>%
   # Your code here
+  group_by(TRT01A,AVISIT)
   
   
   #-----------------------------------------------------------
@@ -48,6 +49,9 @@ step2 <- step1 %>%
 #-----------------------------------------------------------
 
 step3 <- step2 %>%
+  summarise(
+    Mean=mean(AVAL),.groups = "drop"
+  )
   # Your code here
   
   
@@ -62,6 +66,11 @@ step3 <- step2 %>%
 
 tfl_table <- step3 %>%
   # Your code here
+  pivot_wider(
+    id_cols = c(AVISIT),
+    names_from = TRT01A,
+    values_from = Mean
+  )
   
   
   #-----------------------------------------------------------
