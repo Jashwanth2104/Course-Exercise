@@ -110,7 +110,7 @@ baseline <- adlb_step6 %>%
   #-----------------------------------------------------------
 # 08. Calculate CHG
 # Calculate change from baseline
-# (CHG = AVAL - BASE).
+# (CHG = AVAL - BASE)
 #-----------------------------------------------------------
 
 adlb_final <- adlb_step7 %>%

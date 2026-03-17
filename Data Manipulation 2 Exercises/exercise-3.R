@@ -16,6 +16,7 @@
 #-----------------------------------------------------------
 
 library(dplyr)
+library(haven)
 
 #-----------------------------------------------------------
 # 1. Create Helper Function
@@ -27,17 +28,20 @@ library(dplyr)
 #   - dataframe with BASEFL variable
 #-----------------------------------------------------------
 
-derive_baseline_flag <- function(df, baseline_visit) {
+derive_baseline_flag <- function(df, baseline_visit){
+  df %>% 
+    mutate(BASEFL = if_else(VISIT==baseline_visit,"Y",NA_character_))
+}
   
   # Your code here
   
-}
+
 
 #-----------------------------------------------------------
 # 2. Read Sample VS Data
 #-----------------------------------------------------------
 
-vs <- read.csv("VS.csv", stringsAsFactors = FALSE)
+vs <- pharmaversesdtm::vs
 
 #-----------------------------------------------------------
 # 3. Test the Function
@@ -45,7 +49,8 @@ vs <- read.csv("VS.csv", stringsAsFactors = FALSE)
 # using baseline visit = "SCREENING".
 #-----------------------------------------------------------
 
-vs_with_basefl <- 
+vs_with_basefl <-vs %>% 
+  derive_baseline_flag("BASELINE")
   # Your code here
   
   
@@ -55,7 +60,8 @@ vs_with_basefl <-
 #-----------------------------------------------------------
 
 # Your code here
-
+check <- vs_with_basefl %>% 
+  filter(BASEFL!=VSBLFL)
 
 #-----------------------------------------------------------
 # End of Exercise
