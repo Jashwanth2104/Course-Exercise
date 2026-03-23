@@ -27,6 +27,8 @@ C66741,C60832,OXYSAT,Oxygen Saturation Measurement,Oxygen Saturation Measurement
 C66741,V00224,VSALL,VS Domain ALL Tests,VS Domain ALL Tests,
 C66741,C25347,HEIGHT,Height,,
 C66741,C25208,WEIGHT,Weight,,
+C66742,C49487,N,No,,No
+C66742,C17998,U,,Unknown,U;UNK;Unknown
 C66742,C49488,Y,Yes,Yes,Yes
 C66770,C25613,%,Percentage,Percentage,Percentage
 C66770,C28252,kg,kilogram,kg,
@@ -148,3 +150,6 @@ VISIT,VISIT,RETRIEVAL,Retrieval,retrieval,
 VISIT,VISIT,UNSCHEDULED 3.1,Unscheduled 3.1,,
 VISIT,VISIT,AMBUL ECG PLACEMENT,Ambul ECG Placement,,
 VISIT,VISIT,AMBUL ECG REMOVAL,Ambul ECG Removal,,
+C66769,C41338,MILD,Mild Adverse Event,,Grade 1
+C66769,C41339,MODERATE,Moderate Adverse Event,,Grade 2
+C66769,C41340,SEVERE,Severe Adverse Event,,Grade 3
